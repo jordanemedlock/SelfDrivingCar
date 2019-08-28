@@ -41,9 +41,10 @@ def forward():
 	duration = request.args.get('duration') or 1
 	move.forward()
 	moving = 'forward'
-	time.sleep(duration)
-	if moving == 'forward':
-		move.stop()
+	if duration != 'forever':
+		time.sleep(duration)
+		if moving == 'forward':
+			move.stop()
 	return "Success"
 
 @app.route('/backward')
@@ -53,9 +54,10 @@ def backward():
 	duration = request.args.get('duration') or 1
 	move.backward()
 	moving = 'backward'
-	time.sleep(duration)
-	if moving == 'backward':
-		move.stop()
+	if duration != 'forever':
+		time.sleep(duration)
+		if moving == 'backward':
+			move.stop()
 	return "Success"
 
 @app.route('/stop')
