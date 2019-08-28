@@ -1,5 +1,5 @@
 from gpiozero import PWMLED, Motor
-from flask import Flask
+from flask import Flask, request
 import time
 
 app = Flask(__name__)
@@ -32,24 +32,43 @@ class Turn():
 
 turn = Turn(5, 6)
 
+moving = None
 
 @app.route('/forward')
 def forward():
+	global moving
+	speed = request.args.get('speed') or 0.8
+	duration = request.args.get('duration') or 1
 	move.forward()
+	moving = 'forward'
+	time.sleep(duration)
+	if moving == 'forward':
+		move.stop()
 	return "Success"
 
 @app.route('/backward')
 def backward():
+	global moving
+	speed = request.args.get('speed') or 0.8
+	duration = request.args.get('duration') or 1
 	move.backward()
+	moving = 'backward'
+	time.sleep(duration)
+	if moving == 'backward':
+		move.stop()
 	return "Success"
 
 @app.route('/stop')
 def stop():
+	global moving
 	move.stop()
+	turn.stop()
+	moving = False
 	return "Success"
 
 @app.route('/left')
 def left():
+	global turning
 	turn.turn_left()
 	return "Success"
 
