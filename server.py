@@ -7,13 +7,10 @@ app = Flask(__name__)
 move = Motor(27, 17)
 move.stop()
 
-
-turn = Turn(5, 6)
-
 class Turn():
 	def __init__(self, left, right):
-		this.left = PWMLED(left)
-		this.right = PWMLED(right)
+		self.left = PWMLED(left)
+		self.right = PWMLED(right)
 
 	def turn_left(self, value=0.2, for_time=0.2):
 		self.left.value = value
@@ -32,6 +29,9 @@ class Turn():
 	def close(self):
 		self.left.close()
 		self.right.close()
+
+turn = Turn(5, 6)
+
 
 @app.route('/forward')
 def forward():
@@ -57,3 +57,6 @@ def left():
 def right():
 	turn.turn_right()
 	return "Success"
+
+if __name__ == '__main__':
+    app.run('0.0.0.0', 3000, True)
